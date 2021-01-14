@@ -19,7 +19,7 @@ public class Cidade implements Serializable{
 	private String nome;
 	
 	@ManyToOne
-	@JoinColumn(name="estado_id")
+	@JoinColumn(name="estado_id") // Neste caso, o objeto Cidade depende de um obj do tipo Estado
 	private Estado estado;
 	
 	public Cidade() {
