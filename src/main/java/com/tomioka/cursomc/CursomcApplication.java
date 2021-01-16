@@ -1,5 +1,6 @@
 package com.tomioka.cursomc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.tomioka.cursomc.domain.Cidade;
 import com.tomioka.cursomc.domain.Cliente;
 import com.tomioka.cursomc.domain.Endereco;
 import com.tomioka.cursomc.domain.Estado;
+import com.tomioka.cursomc.domain.Pagamento;
+import com.tomioka.cursomc.domain.PagamentoComBoleto;
+import com.tomioka.cursomc.domain.PagamentoComCartao;
+import com.tomioka.cursomc.domain.Pedido;
 import com.tomioka.cursomc.domain.Produto;
+import com.tomioka.cursomc.domain.enums.EstadoPagamento;
 import com.tomioka.cursomc.domain.enums.TipoCliente;
 import com.tomioka.cursomc.repositories.CategoriaRepository;
 import com.tomioka.cursomc.repositories.CidadeRepository;
 import com.tomioka.cursomc.repositories.ClienteRepository;
 import com.tomioka.cursomc.repositories.EnderecoRepository;
 import com.tomioka.cursomc.repositories.EstadoRepository;
+import com.tomioka.cursomc.repositories.PagamentoRepository;
+import com.tomioka.cursomc.repositories.PedidoRepository;
 import com.tomioka.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -26,21 +34,21 @@ public class CursomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-
 	@Autowired
 	private ProdutoRepository produtoRepository;
-
 	@Autowired
 	private EstadoRepository estadoRepository;
-
 	@Autowired
 	private CidadeRepository cidadeRepository;
-
 	@Autowired
 	private ClienteRepository clienteRepository;
-
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -92,6 +100,25 @@ public class CursomcApplication implements CommandLineRunner {
 
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); // formatação de uma data
+
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), e1, cli1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), e2, cli1);
+
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1); // setter é utilizado pois "pagamento" não é um atributo 
+								// presente no construtor
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"),
+				null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedido().addAll(Arrays.asList(ped1, ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
 
 	}
 

@@ -18,11 +18,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tomioka.cursomc.domain.enums.TipoCliente;
 
 @Entity
-public class Cliente implements Serializable{
+public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private String email;
@@ -32,14 +32,18 @@ public class Cliente implements Serializable{
 
 	// Cliente pode possuir mais de um endereço
 	@JsonManagedReference
-	@OneToMany(mappedBy="cliente") // Mapeado por "cliente" na classe Endereco
+	@OneToMany(mappedBy = "cliente") // Mapeado por "cliente" na classe Endereco
 	private List<Endereco> endereco = new ArrayList<>();
+
+	// Atributo Pedido, onde "um cliente pode ter vários pedidos"
+	@OneToMany(mappedBy="cliente")
+	private List<Pedido> pedido = new ArrayList<>();
 
 	// Telefone é uma classe "fraca", possuindo somente 1 atributo
 	// Optou-se criar uma coleção de Strings associadas ao Cliente
 	// Set<Strings> n permite que haja repetições de Strings na lista
 	@ElementCollection
-	@CollectionTable(name="Telefone")
+	@CollectionTable(name = "Telefone")
 	private Set<String> telefones = new HashSet<>();
 
 	public Cliente() {
@@ -108,6 +112,14 @@ public class Cliente implements Serializable{
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<Pedido> getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(List<Pedido> pedido) {
+		this.pedido = pedido;
 	}
 
 	@Override
