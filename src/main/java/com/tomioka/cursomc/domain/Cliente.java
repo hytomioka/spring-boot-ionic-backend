@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tomioka.cursomc.domain.enums.TipoCliente;
 
@@ -36,6 +37,7 @@ public class Cliente implements Serializable {
 	private List<Endereco> endereco = new ArrayList<>();
 
 	// Atributo Pedido, onde "um cliente pode ter vários pedidos"
+	@JsonIgnore
 	@OneToMany(mappedBy="cliente")
 	private List<Pedido> pedido = new ArrayList<>();
 

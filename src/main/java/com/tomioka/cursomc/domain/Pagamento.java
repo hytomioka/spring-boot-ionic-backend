@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tomioka.cursomc.domain.enums.EstadoPagamento;
 
 // Uma classe do tipo "abstract" não pode ser instanciada, sendo assim, ela será instanciada 
@@ -23,6 +24,7 @@ public abstract class Pagamento implements Serializable { // para cada subclasse
 	private Integer id;
 	private Integer estado;
 	
+	@JsonIgnore
 	@OneToOne // mapeamento um para um
 	@JoinColumn(name="pedido_id")
 	@MapsId // garante que o "id" será o mesmo na classe Pedido
