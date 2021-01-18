@@ -13,6 +13,7 @@ import com.tomioka.cursomc.domain.Cidade;
 import com.tomioka.cursomc.domain.Cliente;
 import com.tomioka.cursomc.domain.Endereco;
 import com.tomioka.cursomc.domain.Estado;
+import com.tomioka.cursomc.domain.ItemPedido;
 import com.tomioka.cursomc.domain.Pagamento;
 import com.tomioka.cursomc.domain.PagamentoComBoleto;
 import com.tomioka.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.tomioka.cursomc.repositories.CidadeRepository;
 import com.tomioka.cursomc.repositories.ClienteRepository;
 import com.tomioka.cursomc.repositories.EnderecoRepository;
 import com.tomioka.cursomc.repositories.EstadoRepository;
+import com.tomioka.cursomc.repositories.ItemPedidoRepository;
 import com.tomioka.cursomc.repositories.PagamentoRepository;
 import com.tomioka.cursomc.repositories.PedidoRepository;
 import com.tomioka.cursomc.repositories.ProdutoRepository;
@@ -48,7 +50,8 @@ public class CursomcApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
-	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -107,18 +110,30 @@ public class CursomcApplication implements CommandLineRunner {
 		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), e2, cli1);
 
 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
-		ped1.setPagamento(pagto1); // setter é utilizado pois "pagamento" não é um atributo 
-								// presente no construtor
-		
+		ped1.setPagamento(pagto1); // setter é utilizado pois "pagamento" não é um atributo
+									// presente no construtor
+
 		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"),
 				null);
 		ped2.setPagamento(pagto2);
-		
+
 		cli1.getPedido().addAll(Arrays.asList(ped1, ped2));
-		
+
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
-		
+
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.0);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.0, 2, 80.0);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.0, 1, 800.0);
+
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 
 	}
 
