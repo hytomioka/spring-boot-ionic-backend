@@ -27,7 +27,7 @@ public class CategoriaResource {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	// ReponseEntity<> encapsula informações do tipo HTTP num serviço REST
 	public ResponseEntity<?> find(@PathVariable Integer id) {
-		Categoria obj = service.buscar(id);
+		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
@@ -43,5 +43,13 @@ public class CategoriaResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	// Método PUT atualiza uma informação
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+		obj.setId(id);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 }

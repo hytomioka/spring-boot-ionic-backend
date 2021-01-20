@@ -20,7 +20,7 @@ public class ClienteResource {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	// ReponseEntity<> encapsula informações do tipo HTTP num serviço REST 
 	public ResponseEntity<?> find(@PathVariable Integer id) {
-		Cliente obj = service.buscar(id);
+		Cliente obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }
