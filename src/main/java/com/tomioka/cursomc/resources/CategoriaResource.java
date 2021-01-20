@@ -1,6 +1,8 @@
 package com.tomioka.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * Camada do controlador REST 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tomioka.cursomc.domain.Categoria;
+import com.tomioka.cursomc.dto.CategoriaDTO;
 import com.tomioka.cursomc.services.CategoriaService;
 
 @RestController
@@ -58,4 +61,14 @@ public class CategoriaResource {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> list = service.findAll();
+		// list.stream().map() faz uma operação para cada elemento da lista
+		// collect() coleta cada operação efetuada por map() e junta numa lista novamente
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
 }
