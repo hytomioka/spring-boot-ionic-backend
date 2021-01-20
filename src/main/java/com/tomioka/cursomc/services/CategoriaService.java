@@ -34,9 +34,11 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj); // spring possui o mesmo método para guardar ou atualizar os dados
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj); // spring possui o mesmo método para guardar ou atualizar os dados
 	}
+
 
 	public void delete(Integer id) {
 		find(id);
@@ -62,6 +64,10 @@ public class CategoriaService {
 	// instancia uma nova Categoria a partir de um DTO
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 
 }
