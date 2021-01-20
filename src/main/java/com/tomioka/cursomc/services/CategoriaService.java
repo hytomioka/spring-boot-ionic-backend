@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.tomioka.cursomc.domain.Categoria;
+import com.tomioka.cursomc.dto.CategoriaDTO;
 import com.tomioka.cursomc.repositories.CategoriaRepository;
 import com.tomioka.cursomc.services.exceptions.DataIntegrityException;
 import com.tomioka.cursomc.services.exceptions.ObjectNotFoundException;
@@ -55,6 +56,12 @@ public class CategoriaService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 
+	}
+	
+	// método para conversão de um objeto CategoriaDTO para um objeto Categoria
+	// instancia uma nova Categoria a partir de um DTO
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 
 }
