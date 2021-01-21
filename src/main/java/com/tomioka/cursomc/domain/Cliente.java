@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Cliente implements Serializable {
 	private Integer tipo; // O tipo do Cliente será armazenado como um Integer
 
 	// Cliente pode possuir mais de um endereço
-	@OneToMany(mappedBy = "cliente") // Mapeado por "cliente" na classe Endereco
+	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL) // Mapeado por "cliente" na classe Endereco
 	private List<Endereco> endereco = new ArrayList<>();
 
 	// Atributo Pedido, onde "um cliente pode ter vários pedidos"
