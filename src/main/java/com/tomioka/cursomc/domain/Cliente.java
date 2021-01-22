@@ -32,9 +32,9 @@ public class Cliente implements Serializable {
 	private Integer tipo; // O tipo do Cliente será armazenado como um Integer
 
 	// Cliente pode possuir mais de um endereço
-	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL) // Mapeado por "cliente" na classe Endereco
-	private List<Endereco> endereco = new ArrayList<>();
-
+	// "cascade" permite a delecao do objeto Cliente mesmo se houver um Endereço vinculado
+	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL) // Mapeado por "cliente" na classe Endereco. 
+	private List<Endereco> endereco = new ArrayList<>(); 
 	// Atributo Pedido, onde "um cliente pode ter vários pedidos"
 	@JsonIgnore
 	@OneToMany(mappedBy="cliente")
