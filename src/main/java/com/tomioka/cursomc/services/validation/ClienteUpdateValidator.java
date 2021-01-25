@@ -39,6 +39,8 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 		List<FieldMessage> list = new ArrayList<>();
 		
 		Cliente aux = repo.findByEmail(objDto.getEmail());
+		
+		// validacao na atualizacao do email para clientes diferentes
 		if (aux != null && !aux.getId().equals(uriId)) {
 			list.add(new FieldMessage("email", "E-mail já cadastrado"));
 		}
