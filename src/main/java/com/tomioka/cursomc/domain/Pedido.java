@@ -24,8 +24,8 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@JsonFormat(pattern="dd/MM/yyyy HH:MM")
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:MM")
 	private Date instante;
 
 	// atributo pagamento será mapeado pelo atributo pedido (id será vinculado)
@@ -41,7 +41,7 @@ public class Pedido implements Serializable {
 	private Cliente cliente;
 
 	// Classe Pedido precisa conhecer os "itens pedidos"
-	@OneToMany(mappedBy="id.pedido")
+	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
 
 	public Pedido() {
@@ -56,6 +56,14 @@ public class Pedido implements Serializable {
 		this.instante = instante;
 		this.enderecoDeEntrega = enderecoDeEntrega;
 		this.cliente = cliente;
+	}
+
+	public Double getValorTotal() {
+		double soma = 0;
+		for (ItemPedido ip : itens) {
+			soma = soma + ip.getSubTotal();
+		}
+		return soma;
 	}
 
 	public Integer getId() {

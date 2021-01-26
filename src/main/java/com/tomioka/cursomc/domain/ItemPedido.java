@@ -36,6 +36,11 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 	
+	// utilizar "get+nome_do_método" retorna a operação dentro do corpo do arquivo JSON
+	public Double getSubTotal() {
+		return (preco * quantidade) - desconto;
+	}
+	
 	@JsonIgnore // getPedido desta classe tb será serializado, resulta em serilialização cíclica
 	public Pedido getPedido() {
 		return id.getPedido();
